@@ -4,7 +4,6 @@
 #include <vector>
 #include <memory>
 
-
 class Centroid : public Point
 {
     public:

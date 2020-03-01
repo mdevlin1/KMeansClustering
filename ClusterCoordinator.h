@@ -13,7 +13,7 @@ class ClusterCoordinator
         ~ClusterCoordinator();
         void addCentroid(CentroidPtr c);
         void setPoints(std::vector<Point> points);
-        void populateClusters();
+        void updateClusters();
 
     private:
         std::vector<CentroidPtr> _centroids;

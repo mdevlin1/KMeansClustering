@@ -8,7 +8,6 @@ Point::Point(int x, int y) :
 
 Point::~Point()
 {
-
 }
 
 double Point::distance(const int pos_x, const int pos_y)

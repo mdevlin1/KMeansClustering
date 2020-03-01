@@ -1,1 +1,1 @@
-Program('kmeans', Glob("*.cpp"))
+Program('kmeans', Glob("*.cpp"), CXXFLAGS=["-g"])
