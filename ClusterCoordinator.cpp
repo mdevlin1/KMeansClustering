@@ -1,11 +1,43 @@
 #include "ClusterCoordinator.h"
 #include <algorithm>
+#include <Poco/Util/XMLConfiguration.h>
 
-ClusterCoordinator::ClusterCoordinator()
+namespace {
+    const std::string cNumIterations = "num_iterations";
+    const std::string cPointsFile = "points_file";
+    const std::string cCentroidsFile = "centroids_file";
+}
+
+ClusterCoordinator::ClusterCoordinator(Poco::AutoPtr<Poco::Util::XMLConfiguration> config)
+    : _config(config), _numIterations(0)
 { }
 
 ClusterCoordinator::~ClusterCoordinator()
 { }
+
+void ClusterCoordinator::initialize()
+{
+    _numIterations = _config->getInt(cNumIterations);
+    std::string pointsFile = _config->getString(cPointsFile);
+    std::string centroidsFile = _config->getString(cCentroidsFile);
+    
+    std::vector<Point> points = parseFile(pointsFile);
+    std::vector<Point> centroids = parseFile(centroidsFile);
+    setPoints(points);
+    for (std::vector<Point>::iterator iter = centroids.begin(); iter != centroids.end(); ++iter)
+    {
+        CentroidPtr c = std::make_shared<Centroid>(*iter);
+        addCentroid(c);
+    }
+}
+
+void ClusterCoordinator::run()
+{
+    for (int i = 0; i < _numIterations; i++)
+    {
+        updateClusters();
+    }
+}
 
 void ClusterCoordinator::addCentroid(CentroidPtr c)
 {

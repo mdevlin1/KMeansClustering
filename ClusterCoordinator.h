@@ -3,14 +3,16 @@
 #include "Centroid.h"
 #include "Point.h"
 #include <vector>
-
-typedef std::shared_ptr<Centroid> CentroidPtr;
+#include <Poco/Util/XMLConfiguration.h>
+#include "KMCCommon.h"
 
 class ClusterCoordinator
 {
     public:
-        ClusterCoordinator();
+        ClusterCoordinator(Poco::AutoPtr<Poco::Util::XMLConfiguration> config);
         ~ClusterCoordinator();
+        void initialize();
+        void run();
         void addCentroid(CentroidPtr c);
         void setPoints(std::vector<Point> points);
         void updateClusters();
@@ -18,4 +20,6 @@ class ClusterCoordinator
     private:
         std::vector<CentroidPtr> _centroids;
         std::vector<Point> _points;
+        Poco::AutoPtr<Poco::Util::XMLConfiguration> _config;
+        int _numIterations;
 };

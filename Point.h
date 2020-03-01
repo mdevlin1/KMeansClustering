@@ -4,6 +4,7 @@ class Point
 {
     public:
         Point(int x, int y);
+        Point(const Point &p) { _x = p.getXPos(); _y = p.getYPos(); }
         ~Point();
         double distance(const int pos_x, const int pos_y);
         int setXPos(int pos_x) { _x = pos_x; }

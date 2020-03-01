@@ -6,6 +6,11 @@ Centroid::Centroid(int x, int y) :
 {
 }
 
+Centroid::Centroid(const Point &p) :
+    Point(p)
+{
+}
+
 Centroid::~Centroid()
 {}
 
