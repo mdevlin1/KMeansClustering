@@ -26,7 +26,7 @@ void Centroid::clear()
 
 void Centroid::printContainingPoints()
 {
-    std::cout << "Cluster points: " << std::endl;
+    std::cout << "Cluster (" << getXPos() << ", " << getYPos() << "): " << std::endl;
     for (std::vector<Point>::iterator iter = _clusterPoints.begin(); iter != _clusterPoints.end(); ++iter)
     {
         std::cout << "\tPoint coordinates: (" << iter->getXPos() << ", " << iter->getYPos() << ")" << std::endl;

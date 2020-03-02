@@ -77,3 +77,12 @@ void ClusterCoordinator::updateClusters()
         pointsCluster->addPoint(*iter);
     }
 }
+
+void ClusterCoordinator::printClusterInformation()
+{
+    for (std::vector<CentroidPtr>::iterator iter = _centroids.begin(); iter != _centroids.end(); ++iter)
+    {
+        CentroidPtr current = *iter;
+        current->printContainingPoints();
+    }
+}

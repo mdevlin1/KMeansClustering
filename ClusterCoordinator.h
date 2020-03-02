@@ -16,6 +16,7 @@ class ClusterCoordinator
         void addCentroid(CentroidPtr c);
         void setPoints(std::vector<Point> points);
         void updateClusters();
+        void printClusterInformation();
 
     private:
         std::vector<CentroidPtr> _centroids;

@@ -16,6 +16,7 @@ int main()
     ClusterCoordinator clusterCoord(config);
     clusterCoord.initialize();
     clusterCoord.run();
+    clusterCoord.printClusterInformation();
     
     return 0;
 }
