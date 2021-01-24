@@ -16,15 +16,19 @@ class ClusterCoordinator
         
         // Finds the minimum x and y coordinates of a data point vector
         // and return a Point object with those values
-        Point findMinDataPoint();
+        Point findMinDataPoint(std::vector<Point> points);
         
         // Finds the maximum x and y coordinates of a data point vector
         // and return a Point object with those values
-        Point findMaxDataPoint();
+        Point findMaxDataPoint(std::vector<Point> points);
+
+        // Finds the vector average of an inputted vector of points, this will
+        // be used to recalculate the centroid's center each iteration
+        std::pair<double, double> calculatePointsVectorAverage(std::vector<Point> points);
 
         void populateCentroidVector();
-
         void updateClusters();
+        void recalculateClusterCoordinates();
         void printClusterInformation();
 
     private:

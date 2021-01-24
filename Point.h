@@ -3,16 +3,16 @@
 class Point
 {
     public:
-        Point(int x, int y);
+        Point(double x, double y);
         Point(const Point &p) { _x = p.getXPos(); _y = p.getYPos(); }
         ~Point();
-        double distance(const int pos_x, const int pos_y);
-        void setXPos(int pos_x) { _x = pos_x; }
-        int getXPos() const { return _x; }
-        void setYPos(int pos_y) { _y = pos_y; }
-        int getYPos() const { return _y; }
+        double distance(const double pos_x, const double pos_y);
+        void setXPos(double pos_x) { _x = pos_x; }
+        double getXPos() const { return _x; }
+        void setYPos(double pos_y) { _y = pos_y; }
+        double getYPos() const { return _y; }
 
     protected:
-        int _x;
-        int _y;
+        double _x;
+        double _y;
 };

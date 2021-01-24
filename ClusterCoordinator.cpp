@@ -29,20 +29,22 @@ void ClusterCoordinator::initialize()
 
 void ClusterCoordinator::run()
 {
-    for (int i = 0; i < _numIterations; i++)
+    for (unsigned int i = 0; i < _numIterations; i++)
     {
         updateClusters();
+        recalculateClusterCoordinates();
+        printClusterInformation();
     }
 }
 
 // Finds the minimum x and y coordinates of a data point vector
 // and return a Point object with those values
-Point ClusterCoordinator::findMinDataPoint()
+Point ClusterCoordinator::findMinDataPoint(std::vector<Point> points)
 {
-    std::vector<Point>::iterator iter = _points.begin();
-    unsigned int minX = iter->getXPos();
-    unsigned int minY = iter->getYPos();
-    for (; iter != _points.end(); ++iter) 
+    std::vector<Point>::iterator iter = points.begin();
+    double minX = iter->getXPos();
+    double minY = iter->getYPos();
+    for (; iter != points.end(); ++iter) 
     {
         if (iter->getXPos() < minX) { minX = iter->getXPos(); }
         if (iter->getYPos() < minY) { minY = iter->getYPos(); }
@@ -53,12 +55,12 @@ Point ClusterCoordinator::findMinDataPoint()
 
 // Finds the maximum x and y coordinates of a data point vector
 // and return a Point object with those values
-Point ClusterCoordinator::findMaxDataPoint()
+Point ClusterCoordinator::findMaxDataPoint(std::vector<Point> points)
 {
-    std::vector<Point>::iterator iter = _points.begin();
-    unsigned int maxX = iter->getXPos();
-    unsigned int maxY = iter->getYPos();
-    for (; iter != _points.end(); ++iter)
+    std::vector<Point>::iterator iter = points.begin();
+    double maxX = iter->getXPos();
+    double maxY = iter->getYPos();
+    for (; iter != points.end(); ++iter)
     {
         if (iter->getXPos() > maxX) { maxX = iter->getXPos(); }
         if (iter->getYPos() > maxY) { maxY = iter->getYPos(); }
@@ -67,20 +69,51 @@ Point ClusterCoordinator::findMaxDataPoint()
     return Point(maxX, maxY);
 }
 
+// Finds the vector average of an inputted vector of points, this will
+// be used to recalculate the centroid's center each iteration
+std::pair<double, double> ClusterCoordinator::calculatePointsVectorAverage(std::vector<Point> points)
+{
+    double totalX = 0, totalY = 0;
+    for (std::vector<Point>::iterator point_iter = points.begin(); point_iter != points.end(); ++point_iter)
+    {
+        totalX += point_iter->getXPos();
+        totalY += point_iter->getYPos();
+    }
+    return std::make_pair<int,int>( (totalX / points.size()), (totalY / points.size()) );
+}
 
 void ClusterCoordinator::populateCentroidVector()
 {
-    Point minDataPoint = findMinDataPoint();
-    Point maxDataPoint = findMaxDataPoint();
+    Point minDataPoint = findMinDataPoint(_points);
+    Point maxDataPoint = findMaxDataPoint(_points);
 
     srand(time(NULL));
 
     for (unsigned int centroidIdx = 0; centroidIdx < _numberOfCentroids; ++centroidIdx) 
     {
-        int centroidXPos = rand() % maxDataPoint.getXPos();
-        int centroidYPos = rand() % maxDataPoint.getYPos();
+        double centroidXPos = rand() % (int)maxDataPoint.getXPos();
+        double centroidYPos = rand() % (int)maxDataPoint.getYPos();
 
         _centroids.push_back(std::make_shared<Centroid>(Centroid(centroidXPos, centroidYPos)));
+    }
+}
+
+void ClusterCoordinator::recalculateClusterCoordinates()
+{
+    for (std::vector<CentroidPtr>::iterator cent_iter = _centroids.begin(); cent_iter != _centroids.end(); ++cent_iter)
+    {
+        CentroidPtr currentCent = *cent_iter;
+        
+        std::vector<Point> centroidPoints = currentCent->getCentroidPoints();
+
+        // If there are no points in the cluster, then don't calculate the average
+        if ( !centroidPoints.empty() )
+        {
+            std::pair<double, double> newCentroidCenter = calculatePointsVectorAverage(centroidPoints);
+
+            currentCent->setXPos(newCentroidCenter.first);
+            currentCent->setYPos(newCentroidCenter.second);
+        }
     }
 }
 
