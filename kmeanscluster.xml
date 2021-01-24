@@ -1,5 +1,5 @@
 <config>
     <num_iterations>100</num_iterations>
     <points_file>points.txt</points_file>
-    <centroids_file>centroids.txt</centroids_file>
+    <number_of_centroids>10</number_of_centroids>
 </config>

@@ -13,8 +13,17 @@ class ClusterCoordinator
         ~ClusterCoordinator();
         void initialize();
         void run();
-        void addCentroid(CentroidPtr c);
-        void setPoints(std::vector<Point> points);
+        
+        // Finds the minimum x and y coordinates of a data point vector
+        // and return a Point object with those values
+        Point findMinDataPoint();
+        
+        // Finds the maximum x and y coordinates of a data point vector
+        // and return a Point object with those values
+        Point findMaxDataPoint();
+
+        void populateCentroidVector();
+
         void updateClusters();
         void printClusterInformation();
 
@@ -22,5 +31,6 @@ class ClusterCoordinator
         std::vector<CentroidPtr> _centroids;
         std::vector<Point> _points;
         Poco::AutoPtr<Poco::Util::XMLConfiguration> _config;
-        int _numIterations;
+        unsigned int _numIterations;
+        unsigned int _numberOfCentroids;
 };

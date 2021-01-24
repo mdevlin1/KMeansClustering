@@ -5,7 +5,7 @@
 namespace {
     const std::string cNumIterations = "num_iterations";
     const std::string cPointsFile = "points_file";
-    const std::string cCentroidsFile = "centroids_file";
+    const std::string cNumberOfCentroids = "number_of_centroids";
 }
 
 ClusterCoordinator::ClusterCoordinator(Poco::AutoPtr<Poco::Util::XMLConfiguration> config)
@@ -18,17 +18,13 @@ ClusterCoordinator::~ClusterCoordinator()
 void ClusterCoordinator::initialize()
 {
     _numIterations = _config->getInt(cNumIterations);
+    _numberOfCentroids = _config->getInt(cNumberOfCentroids);
     std::string pointsFile = _config->getString(cPointsFile);
-    std::string centroidsFile = _config->getString(cCentroidsFile);
     
     std::vector<Point> points = parseFile(pointsFile);
-    std::vector<Point> centroids = parseFile(centroidsFile);
-    setPoints(points);
-    for (std::vector<Point>::iterator iter = centroids.begin(); iter != centroids.end(); ++iter)
-    {
-        CentroidPtr c = std::make_shared<Centroid>(*iter);
-        addCentroid(c);
-    }
+    _points = points;
+
+    populateCentroidVector();
 }
 
 void ClusterCoordinator::run()
@@ -39,14 +35,53 @@ void ClusterCoordinator::run()
     }
 }
 
-void ClusterCoordinator::addCentroid(CentroidPtr c)
+// Finds the minimum x and y coordinates of a data point vector
+// and return a Point object with those values
+Point ClusterCoordinator::findMinDataPoint()
 {
-    _centroids.push_back(c);
+    std::vector<Point>::iterator iter = _points.begin();
+    unsigned int minX = iter->getXPos();
+    unsigned int minY = iter->getYPos();
+    for (; iter != _points.end(); ++iter) 
+    {
+        if (iter->getXPos() < minX) { minX = iter->getXPos(); }
+        if (iter->getYPos() < minY) { minY = iter->getYPos(); }
+    }
+
+    return Point(minX, minY);
 }
 
-void ClusterCoordinator::setPoints(std::vector<Point> points)
+// Finds the maximum x and y coordinates of a data point vector
+// and return a Point object with those values
+Point ClusterCoordinator::findMaxDataPoint()
 {
-    _points = points;
+    std::vector<Point>::iterator iter = _points.begin();
+    unsigned int maxX = iter->getXPos();
+    unsigned int maxY = iter->getYPos();
+    for (; iter != _points.end(); ++iter)
+    {
+        if (iter->getXPos() > maxX) { maxX = iter->getXPos(); }
+        if (iter->getYPos() > maxY) { maxY = iter->getYPos(); }
+    }
+    
+    return Point(maxX, maxY);
+}
+
+
+void ClusterCoordinator::populateCentroidVector()
+{
+    Point minDataPoint = findMinDataPoint();
+    Point maxDataPoint = findMaxDataPoint();
+
+    srand(time(NULL));
+
+    for (unsigned int centroidIdx = 0; centroidIdx < _numberOfCentroids; ++centroidIdx) 
+    {
+        int centroidXPos = rand() % maxDataPoint.getXPos();
+        int centroidYPos = rand() % maxDataPoint.getYPos();
+
+        _centroids.push_back(std::make_shared<Centroid>(Centroid(centroidXPos, centroidYPos)));
+    }
 }
 
 void ClusterCoordinator::updateClusters()
