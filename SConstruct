@@ -8,7 +8,7 @@ libs = [
 
 cxxflags = [
     "-g", 
-    "-std=c++0x"
+    "-std=c++17"
 ]
 
 cpppath = [

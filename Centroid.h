@@ -1,20 +1,20 @@
 #pragma once
 
-#include "Point.h"
+#include "Point3D.h"
 #include <vector>
 #include <memory>
 
-class Centroid : public Point
+class Centroid : public Point3D
 {
     public:
-        Centroid(double x, double y);
-        Centroid(const Point &p);
+        Centroid(double x, double y, double z);
+        Centroid(const Point3D &p);
         ~Centroid();
-        void addPoint(Point p);
-        std::vector<Point> getCentroidPoints();
+        void addPoint(Point3D p);
+        std::vector<Point3D> getCentroidPoints();
         void clear();
         void printContainingPoints();
 
     private:
-        std::vector<Point> _clusterPoints;
+        std::vector<Point3D> _clusterPoints;
 };

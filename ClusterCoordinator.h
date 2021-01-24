@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Centroid.h"
-#include "Point.h"
+#include "Point3D.h"
 #include <vector>
 #include <Poco/Util/XMLConfiguration.h>
 #include "KMCCommon.h"
@@ -16,15 +16,15 @@ class ClusterCoordinator
         
         // Finds the minimum x and y coordinates of a data point vector
         // and return a Point object with those values
-        Point findMinDataPoint(std::vector<Point> points);
+        Point3D findMinDataPoint(std::vector<Point3D> points);
         
         // Finds the maximum x and y coordinates of a data point vector
         // and return a Point object with those values
-        Point findMaxDataPoint(std::vector<Point> points);
+        Point3D findMaxDataPoint(std::vector<Point3D> points);
 
         // Finds the vector average of an inputted vector of points, this will
         // be used to recalculate the centroid's center each iteration
-        std::pair<double, double> calculatePointsVectorAverage(std::vector<Point> points);
+        std::tuple<double, double, double> calculatePointsVectorAverage(std::vector<Point3D> points);
 
         void populateCentroidVector();
         void updateClusters();
@@ -33,7 +33,7 @@ class ClusterCoordinator
 
     private:
         std::vector<CentroidPtr> _centroids;
-        std::vector<Point> _points;
+        std::vector<Point3D> _points;
         Poco::AutoPtr<Poco::Util::XMLConfiguration> _config;
         unsigned int _numIterations;
         unsigned int _numberOfCentroids;
