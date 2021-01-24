@@ -1,7 +1,7 @@
 #include "Centroid.h"
 #include <iostream>
 
-Centroid::Centroid(int x, int y) :
+Centroid::Centroid(double x, double y) :
     Point(x, y)
 {
 }
@@ -17,6 +17,11 @@ Centroid::~Centroid()
 void Centroid::addPoint(Point p)
 {
     _clusterPoints.push_back(p);
+}
+
+std::vector<Point> Centroid::getCentroidPoints() 
+{
+    return _clusterPoints;
 }
 
 void Centroid::clear()
