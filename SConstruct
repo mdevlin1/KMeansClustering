@@ -3,7 +3,10 @@ libs = [
     'PocoXML', 
     'PocoJSON', 
     'PocoNet', 
-    'PocoFoundation'
+    'PocoFoundation',
+    'opencv_core',
+    'opencv_highgui',
+    'opencv_imgcodecs'
 ]
 
 cxxflags = [
@@ -12,7 +15,9 @@ cxxflags = [
 ]
 
 cpppath = [
-    '/usr/include/Poco/'
+    '/usr/include/Poco/',
+    '/usr/local/include/opencv2/',
+    '/usr/local/lib/'
 ]
 
 libpath = [

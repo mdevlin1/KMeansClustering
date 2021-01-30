@@ -6,6 +6,8 @@ namespace {
     const std::string cNumIterations = "num_iterations";
     const std::string cPointsFile = "points_file";
     const std::string cNumberOfCentroids = "number_of_centroids";
+    const std::string cImageFile = "image_file";
+    const std::string cOutputImageFile = "output_image_file";
 }
 
 ClusterCoordinator::ClusterCoordinator(Poco::AutoPtr<Poco::Util::XMLConfiguration> config)
@@ -20,9 +22,19 @@ void ClusterCoordinator::initialize()
     _numIterations = _config->getInt(cNumIterations);
     _numberOfCentroids = _config->getInt(cNumberOfCentroids);
     std::string pointsFile = _config->getString(cPointsFile);
-    
-    std::vector<Point3D> points = parseFile(pointsFile);
-    _points = points;
+    std::string imageFile = _config->getString(cImageFile);
+    _outputImageFile = _config->getString(cOutputImageFile);
+
+    // This can be used to debug the k means algorithm, it 
+    // reads in points from a text file and can be used to 
+    // populate the vector of points
+    //std::vector<Point3D> points = parseFile(pointsFile);
+
+    // Uses opencv to convert the image specified in the config file 
+    // to an opencv Mat 
+    _imageMat = cv::imread(imageFile, cv::IMREAD_COLOR);
+
+    _points = ImageProcessor::convertImageToPoints( _imageMat );
 
     populateCentroidVector();
 }
@@ -34,6 +46,10 @@ void ClusterCoordinator::run()
         updateClusters();
         recalculateClusterCoordinates();
     }
+
+    cv::Mat compressedImg = ImageProcessor::convertPointsToImage(_centroids, _imageMat);
+
+    cv::imwrite(_outputImageFile, compressedImg);
 }
 
 // Finds the minimum x and y coordinates of a data point vector

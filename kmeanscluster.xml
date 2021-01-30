@@ -1,5 +1,10 @@
 <config>
+    <!-- The configurable number of iterations is no longer needed. Now we 
+         perform true k means clustering by halting iterations after updates to the
+         cluster coords are unnecessary -->
     <num_iterations>100</num_iterations>
     <points_file>points.txt</points_file>
-    <number_of_centroids>10</number_of_centroids>
+    <number_of_centroids>1000</number_of_centroids>
+    <image_file>/mnt/c/Users/Mitch/workspace/KMeansClustering/cybertruck.jpg</image_file>
+    <output_image_file>/mnt/c/Users/Mitch/workspace/KMeansClustering/compressed_cybertruck.jpg</output_image_file>
 </config>

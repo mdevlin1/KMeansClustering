@@ -5,6 +5,7 @@
 #include <vector>
 #include <Poco/Util/XMLConfiguration.h>
 #include "KMCCommon.h"
+#include "ImageProcessor.h"
 
 class ClusterCoordinator
 {
@@ -37,4 +38,6 @@ class ClusterCoordinator
         Poco::AutoPtr<Poco::Util::XMLConfiguration> _config;
         unsigned int _numIterations;
         unsigned int _numberOfCentroids;
+        std::string _outputImageFile;
+        cv::Mat _imageMat;
 };
