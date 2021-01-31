@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "Point.h"
 
 class Point3D : Point
@@ -17,3 +18,5 @@ class Point3D : Point
     private:
         double _z;
 };
+
+typedef std::shared_ptr<Point3D> Point3DPtr;

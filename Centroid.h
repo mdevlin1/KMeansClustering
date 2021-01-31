@@ -10,11 +10,13 @@ class Centroid : public Point3D
         Centroid(double x, double y, double z);
         Centroid(const Point3D &p);
         ~Centroid();
-        void addPoint(Point3D p);
-        std::vector<Point3D> getCentroidPoints();
+        void addPoint(Point3DPtr p);
+        std::vector<Point3DPtr> getCentroidPoints();
         void clear();
         void printContainingPoints();
 
     private:
-        std::vector<Point3D> _clusterPoints;
+        std::vector<Point3DPtr> _clusterPoints;
 };
+
+typedef std::shared_ptr<Centroid> CentroidPtr;

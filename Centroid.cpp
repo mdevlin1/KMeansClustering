@@ -14,12 +14,12 @@ Centroid::Centroid(const Point3D &p) :
 Centroid::~Centroid()
 {}
 
-void Centroid::addPoint(Point3D p)
+void Centroid::addPoint(Point3DPtr p)
 {
     _clusterPoints.push_back(p);
 }
 
-std::vector<Point3D> Centroid::getCentroidPoints() 
+std::vector<Point3DPtr> Centroid::getCentroidPoints() 
 {
     return _clusterPoints;
 }
@@ -33,9 +33,9 @@ void Centroid::printContainingPoints()
 {
     std::cout << "Cluster (" << getXPos() << ", " << getYPos() << ", " << getZPos() << "): " << std::endl;
     std::cout << "[ ";
-    for (std::vector<Point3D>::iterator iter = _clusterPoints.begin(); iter != _clusterPoints.end(); ++iter)
+    for (std::vector<Point3DPtr>::iterator iter = _clusterPoints.begin(); iter != _clusterPoints.end(); ++iter)
     {
-        std::cout << "(" << iter->getXPos() << ", " << iter->getYPos() << ", " << iter->getZPos() << ")" << ",";
+        std::cout << "(" << (*iter)->getXPos() << ", " << (*iter)->getYPos() << ", " << (*iter)->getZPos() << ")" << ",";
     }
     std::cout << "]" << std::endl;
     std::cout << "Number of points in cluster: " << _clusterPoints.size() << std::endl;
