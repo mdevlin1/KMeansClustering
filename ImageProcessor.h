@@ -41,13 +41,12 @@ namespace ImageProcessor {
         cv::MatIterator_ <cv::Vec3b> it, end;
         unsigned int pointCount = 0;
         for (it = img.begin<cv::Vec3b>(), end = img.end<cv::Vec3b>(); it != end; ++it) {
-            (*it)[2] = points[pointCount]->getXPos();
-            (*it)[1] = points[pointCount]->getXPos();
-            (*it)[0] = points[pointCount]->getZPos();
+            (*it)[2] = (uchar)points[pointCount]->getXPos();
+            (*it)[1] = (uchar)points[pointCount]->getYPos();
+            (*it)[0] = (uchar)points[pointCount]->getZPos();
             pointCount++;
         }
-
-        // TODO: Iterate over pointers in each centroid, then put point ptrs back into cv mat
+        
         return img;
     }
    

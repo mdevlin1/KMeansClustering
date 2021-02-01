@@ -55,6 +55,9 @@ void ClusterCoordinator::run()
 
     cv::Mat compressedImg = ImageProcessor::convertPointsToImage(_centroids, _points, _imageMat);
 
+    std::vector<int> compression_params;
+    compression_params.push_back(cv::IMWRITE_JPEG_OPTIMIZE);
+    compression_params.push_back(1);
     cv::imwrite(_outputImageFile, compressedImg);
 }
 
